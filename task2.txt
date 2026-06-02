@@ -1,0 +1,92 @@
+PROGRAM:
+
+# Wi-Fi Password Security Auditor
+
+def audit_password(password):
+    score = 0
+    remarks = []
+
+    # Length check
+    if len(password) >= 12:
+        score += 2
+    elif len(password) >= 8:
+        score += 1
+    else:
+        remarks.append("Password is too short.")
+
+    # Uppercase check
+    if any(char.isupper() for char in password):
+        score += 1
+    else:
+        remarks.append("Add uppercase letters.")
+
+    # Lowercase check
+    if any(char.islower() for char in password):
+        score += 1
+    else:
+        remarks.append("Add lowercase letters.")
+
+    # Digit check
+    if any(char.isdigit() for char in password):
+        score += 1
+    else:
+        remarks.append("Add numbers.")
+
+    # Special character check
+    special_chars = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/"
+    if any(char in special_chars for char in password):
+        score += 1
+    else:
+        remarks.append("Add special characters.")
+
+    # Common weak passwords
+    weak_passwords = [
+        "password", "12345678", "admin", "qwerty",
+        "welcome", "password123"
+    ]
+
+    if password.lower() in weak_passwords:
+        remarks.append("Password is a common weak password.")
+        score = 0
+
+    # Security level
+    if score >= 6:
+        level = "Strong"
+    elif score >= 4:
+        level = "Medium"
+    else:
+        level = "Weak"
+
+    return level, remarks
+
+
+# Main Program
+wifi_password = input("Enter Wi-Fi Password to Audit: ")
+
+level, remarks = audit_password(wifi_password)
+
+print("\n----- Audit Report -----")
+print("Security Level:", level)
+
+if remarks:
+    print("Suggestions:")
+    for item in remarks:
+        print("-", item)
+else:
+    print("No issues found. Password is secure.")
+
+INPUT:
+
+Enter Wi-Fi Password to Audit: password
+
+OUTPUT:
+
+----- Audit Report -----
+Security Level: Weak
+Suggestions:
+- Add uppercase letters.
+- Add numbers.
+- Add special characters.
+- Password is a common weak password.
+
+
